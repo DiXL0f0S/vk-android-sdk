@@ -38,6 +38,26 @@ import org.json.JSONObject;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class VKApiMessages extends VKApiBase {
     /**
+     * https://vk.com/dev/messages.delete
+     *
+     * @param params use parameters from description with VKApiConst class
+     * @return Request for load
+     */
+    public VKRequest delete(VKParameters params) {
+        return prepareRequest("delete", params);
+    }
+
+    /**
+     * https://vk.com/dev/messages.edit
+     *
+     * @param params use parameters from description with VKApiConst class
+     * @return Request for load
+     */
+    public VKRequest edit(VKParameters params) {
+        return prepareRequest("edit", params);
+    }
+
+    /**
      * Returns messages current user
      *
      * @return Request for load
