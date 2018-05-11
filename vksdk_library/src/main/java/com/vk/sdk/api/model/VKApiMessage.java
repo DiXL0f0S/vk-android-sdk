@@ -123,7 +123,7 @@ public class VKApiMessage extends VKApiModel implements Identifiable, android.os
         out = ParseUtils.parseBoolean(source, "out");
         title = source.optString("title");
         body = source.optString("body");
-        attachments .fill(source.optJSONArray("attachments"));
+        attachments.fill(source.optJSONArray("attachments"));
         fwd_messages = new VKList<>(source.optJSONArray("fwd_messages"), VKApiMessage.class);
         emoji = ParseUtils.parseBoolean(source, "emoji");
         deleted = ParseUtils.parseBoolean(source, "deleted");

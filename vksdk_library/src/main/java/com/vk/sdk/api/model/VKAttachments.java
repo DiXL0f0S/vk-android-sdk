@@ -192,6 +192,8 @@ public class VKAttachments extends VKList<VKAttachments.VKApiAttachment> impleme
                 return new VKApiWikiPage().parse(attachment.getJSONObject(TYPE_WIKI_PAGE));
             } else if(TYPE_ALBUM.equals(type)) {
                 return new VKApiPhotoAlbum().parse(attachment.getJSONObject(TYPE_ALBUM));
+            } else if(TYPE_STICKER.equals(type)) {
+                return new VKApiSticker().parse(attachment.getJSONObject(TYPE_STICKER));
             }
             return null;
         }
@@ -240,6 +242,8 @@ public class VKAttachments extends VKList<VKAttachments.VKApiAttachment> impleme
                 add((VKApiAttachment) parcel.readParcelable(VKApiWikiPage.class.getClassLoader()));
             } else if(TYPE_ALBUM.equals(type)) {
                 add((VKApiAttachment)  parcel.readParcelable(VKApiPhotoAlbum.class.getClassLoader()));
+            } else if(TYPE_STICKER.equals(type)) {
+                add((VKApiSticker)  parcel.readParcelable(VKApiSticker.class.getClassLoader()));
             }
         }
     }
