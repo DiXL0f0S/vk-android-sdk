@@ -51,20 +51,36 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
     public String title;
 
     /**
-     * Link description;
+     * Link caption (if any)
+     */
+    public String caption;
+
+    /**
+     * Link description
      */
     public String description;
 
     /**
-     * Image preview URL for the link (if any).
+     * Link description
      */
-    public String image_src;
+    public VKApiPhoto photo;
+
+    /**
+     * Whether the link is external
+     */
+    public boolean is_external;
 
     /**
      * ID wiki page with content for the preview of the page contents
-     * ID is returned as "ownerid_pageid".
+     * ID is returned as "ownerid_pageid"
      */
     public String preview_page;
+
+    /**
+     *
+     * URL of the page for preview
+     */
+    public String preview_url;
 
     /**
      * Creates link attachment to attach it to the post
@@ -84,9 +100,15 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
     public VKApiLink parse(JSONObject source) {
         url = source.optString("url");
         title = source.optString("title");
+        caption = source.optString("caption");
         description = source.optString("description");
-        image_src = source.optString("image_src");
+        try {
+            photo = new VKApiPhoto(source.optJSONObject("photo"));
+        } catch (JSONException ignored) {
+        }
+        is_external = ParseUtils.parseBoolean(source, "is_external");
         preview_page = source.optString("preview_page");
+        preview_url = source.optString("preview_url");
         return this;
     }
 
@@ -96,9 +118,12 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
     private VKApiLink(Parcel in) {
         this.url = in.readString();
         this.title = in.readString();
+        this.caption = in.readString();
         this.description = in.readString();
-        this.image_src = in.readString();
+        this.photo = in.readParcelable(VKApiPhoto.class.getClassLoader());
+        this.is_external = in.readByte() != 0;
         this.preview_page = in.readString();
+        this.preview_url = in.readString();
     }
 
     /**
@@ -127,9 +152,12 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.url);
         dest.writeString(this.title);
+        dest.writeString(this.caption);
         dest.writeString(this.description);
-        dest.writeString(this.image_src);
+        dest.writeParcelable(this.photo, flags);
+        dest.writeByte(this.is_external ? (byte) 1 : (byte) 0);
         dest.writeString(this.preview_page);
+        dest.writeString(this.preview_url);
     }
 
     public static Creator<VKApiLink> CREATOR = new Creator<VKApiLink>() {
@@ -152,9 +180,12 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
         return "VKApiLink{" +
                 "url='" + url + '\'' +
                 ", title='" + title + '\'' +
+                ", caption='" + caption + '\'' +
                 ", description='" + description + '\'' +
-                ", image_src='" + image_src + '\'' +
+                ", photo='" + photo + '\'' +
+                ", is_external='" + is_external + '\'' +
                 ", preview_page='" + preview_page + '\'' +
+                ", preview_url='" + preview_url + '\'' +
                 '}';
     }
 }
