@@ -61,7 +61,7 @@ public class VKApiLink extends VKAttachments.VKApiAttachment implements android.
     public String description;
 
     /**
-     * Link description
+     * Preview image, photo object (if any)
      */
     public VKApiPhoto photo;
 

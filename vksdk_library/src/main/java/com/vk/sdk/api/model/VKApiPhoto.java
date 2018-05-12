@@ -54,14 +54,9 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
     public int owner_id;
 
     /**
-     * Width (in pixels) of the original photo.
+     * ID of the user who uploaded the photo (if the photo is uploaded in community). 100 for photos uploaded by the community
      */
-    public int width;
-
-    /**
-     * Height (in pixels) of the original photo.
-     */
-    public int height;
+    public int user_id;
 
     /**
      * Text describing the photo.
@@ -102,6 +97,16 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
      * URL of image with maximum size 2560x2048px.
      */
     public String photo_2560;
+
+    /**
+     * Width (in pixels) of the original photo.
+     */
+    public int width;
+
+    /**
+     * Height (in pixels) of the original photo.
+     */
+    public int height;
 
     /**
      * All photo thumbs in photo sizes.
@@ -147,13 +152,12 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
      * Fills a Photo instance from JSONObject.
      */
     public VKApiPhoto parse(JSONObject from) {
-        album_id = from.optInt("album_id");
-        date = from.optLong("date");
-        height = from.optInt("height");
-        width = from.optInt("width");
-        owner_id = from.optInt("owner_id");
         id = from.optInt("id");
+        album_id = from.optInt("album_id");
+        owner_id = from.optInt("owner_id");
+        user_id = from.optInt("user_id");
         text = from.optString("text");
+        date = from.optLong("date");
         access_key = from.optString("access_key");
 
         photo_75 = from.optString("photo_75");
@@ -162,6 +166,9 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         photo_807 = from.optString("photo_807");
         photo_1280 = from.optString("photo_1280");
         photo_2560 = from.optString("photo_2560");
+
+        height = from.optInt("height");
+        width = from.optInt("width");
 
         JSONObject likes = from.optJSONObject("likes");
         this.likes = ParseUtils.parseInt(likes, "count");
@@ -205,8 +212,7 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         this.id = in.readInt();
         this.album_id = in.readInt();
         this.owner_id = in.readInt();
-        this.width = in.readInt();
-        this.height = in.readInt();
+        this.user_id = in.readInt();
         this.text = in.readString();
         this.date = in.readLong();
         this.src = in.readParcelable(VKPhotoSizes.class.getClassLoader());
@@ -216,6 +222,8 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         this.photo_807 = in.readString();
         this.photo_1280 = in.readString();
         this.photo_2560 = in.readString();
+        this.width = in.readInt();
+        this.height = in.readInt();
         this.user_likes = in.readByte() != 0;
         this.can_comment = in.readByte() != 0;
         this.likes = in.readInt();
@@ -274,8 +282,7 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         dest.writeInt(this.id);
         dest.writeInt(this.album_id);
         dest.writeInt(this.owner_id);
-        dest.writeInt(this.width);
-        dest.writeInt(this.height);
+        dest.writeInt(this.user_id);
         dest.writeString(this.text);
         dest.writeLong(this.date);
         dest.writeParcelable(this.src, flags);
@@ -285,6 +292,8 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         dest.writeString(this.photo_807);
         dest.writeString(this.photo_1280);
         dest.writeString(this.photo_2560);
+        dest.writeInt(this.width);
+        dest.writeInt(this.height);
         dest.writeByte(user_likes ? (byte) 1 : (byte) 0);
         dest.writeByte(can_comment ? (byte) 1 : (byte) 0);
         dest.writeInt(this.likes);
@@ -309,8 +318,7 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
                 "id=" + id +
                 ", album_id=" + album_id +
                 ", owner_id=" + owner_id +
-                ", width=" + width +
-                ", height=" + height +
+                ", user_id=" + user_id +
                 ", text='" + text + '\'' +
                 ", date=" + date +
                 ", photo_75='" + photo_75 + '\'' +
@@ -319,6 +327,8 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
                 ", photo_807='" + photo_807 + '\'' +
                 ", photo_1280='" + photo_1280 + '\'' +
                 ", photo_2560='" + photo_2560 + '\'' +
+                ", width=" + width +
+                ", height=" + height +
                 ", src=" + src +
                 ", user_likes=" + user_likes +
                 ", can_comment=" + can_comment +
