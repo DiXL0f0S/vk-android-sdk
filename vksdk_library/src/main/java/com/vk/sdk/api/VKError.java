@@ -116,6 +116,7 @@ public class VKError extends VKObject {
         }
 
         //this.errorCode = VK_API_ERROR;
+        this.errorCode = json.optInt("VKApiConst.ERROR_CODE");
         this.apiError = internalError;
     }
 
