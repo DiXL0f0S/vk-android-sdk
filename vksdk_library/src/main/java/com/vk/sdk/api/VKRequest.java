@@ -318,9 +318,9 @@ public class VKRequest extends VKObject {
                         if (VKSdk.DEBUG && VKSdk.DEBUG_API_ERRORS) {
                             Log.w(VKSdk.SDK_TAG, operation.getResponseString());
                         }
-/*                        if (processCommonError(error)) {
+                        if (processCommonError(error)) {
                             return;
-                        }*/
+                        }
                         provideError(error);
                     } catch (JSONException e) {
                         if (VKSdk.DEBUG)
@@ -339,7 +339,7 @@ public class VKRequest extends VKObject {
             public void onError(VKJsonOperation operation, VKError error) {
                 //Хак для проверки того, что корректно распарсился ответ при заливке картинок
                 if (error.errorCode != VKError.VK_CANCELED &&
-                        //error.errorCode != VKError.VK_API_ERROR &&
+                        error.errorCode != VKError.VK_API_ERROR &&
                         operation != null && operation.response != null &&
                         operation.response.statusCode == 200) {
                     provideResponse(operation.getResponseJson(), null);
@@ -488,7 +488,7 @@ public class VKRequest extends VKObject {
         mMethodParameters.putAll(extraParameters);
     }
 
-/*    private boolean processCommonError(final VKError error) {
+    private boolean processCommonError(final VKError error) {
         //TODO: lock thread, if ui required, release then
         if (error.errorCode == VKError.VK_API_ERROR) {
             final VKError apiError = error.apiError;
@@ -517,7 +517,7 @@ public class VKRequest extends VKObject {
         }
 
         return false;
-    }*/
+    }
 
     private String getLang() {
         String result = mPreferredLang;
