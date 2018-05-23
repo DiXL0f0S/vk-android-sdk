@@ -36,7 +36,7 @@ import java.util.Map;
  * Class for presenting VK SDK and VK API errors
  */
 public class VKError extends VKObject {
-	public static final int VK_API_ERROR = -101;
+	//public static final int VK_API_ERROR = -101;
     public static final int VK_CANCELED = -102;
     public static final int VK_REQUEST_NOT_PREPARED = -103;
     public static final int VK_JSON_FAILED = -104;
@@ -115,7 +115,7 @@ public class VKError extends VKObject {
             internalError.redirectUri = json.getString(VKApiConst.REDIRECT_URI);
         }
 
-        this.errorCode = VK_API_ERROR;
+        //this.errorCode = VK_API_ERROR;
         this.apiError = internalError;
     }
 
@@ -129,7 +129,7 @@ public class VKError extends VKObject {
      * @param queryParams key-value parameters
      */
     public VKError(Map<String, String> queryParams) {
-        this.errorCode = VK_API_ERROR;
+        //this.errorCode = VK_API_ERROR;
         this.errorReason = queryParams.get(ERROR_REASON);
         this.errorMessage = Uri.decode(queryParams.get(ERROR_DESCRIPTION));
         if (queryParams.containsKey(FAIL)) {
@@ -168,12 +168,12 @@ public class VKError extends VKObject {
 	{
 		StringBuilder errorString = new StringBuilder("VKError (");
 		switch (this.errorCode) {
-			case VK_API_ERROR:
+/*			case VK_API_ERROR:
 				errorString.append("API error");
                 if (apiError != null) {
                     errorString.append(apiError.toString());
                 }
-				break;
+				break;*/
 			case VK_CANCELED:
 				errorString.append("Canceled");
 				break;
