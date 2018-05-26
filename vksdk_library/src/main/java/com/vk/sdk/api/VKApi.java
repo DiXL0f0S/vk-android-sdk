@@ -24,6 +24,7 @@ package com.vk.sdk.api;
 import com.vk.sdk.api.methods.VKApiAccount;
 import com.vk.sdk.api.methods.VKApiAudio;
 import com.vk.sdk.api.methods.VKApiDocs;
+import com.vk.sdk.api.methods.VKApiFave;
 import com.vk.sdk.api.methods.VKApiFriends;
 import com.vk.sdk.api.methods.VKApiGroups;
 import com.vk.sdk.api.methods.VKApiMessages;
@@ -103,10 +104,10 @@ public class VKApi {
     }
 
     /**
-     * https://vk.com/dev/groups
-     * Returns object for preparing requests to groups part of API
+     * https://vk.com/dev/fave
+     * Returns object for preparing requests to fave part of API
      */
-    public static VKApiGroups groups() { return new VKApiGroups(); }
+    public static VKApiFave fave() { return new VKApiFave(); }
     /**
      * Upload a specified file to VK servers for posting on user or group wall
      * @param image Image file to upload. Must have extension jpg or png
@@ -114,6 +115,11 @@ public class VKApi {
      * @param groupId Group id or 0
      * @return Prepared vk request for photo upload
      */
+    /**
+     * https://vk.com/dev/groups
+     * Returns object for preparing requests to groups part of API
+     */
+    public static VKApiGroups groups() { return new VKApiGroups(); }
     public static VKRequest uploadWallPhotoRequest(File image, long userId, int groupId) {
         return new VKUploadWallPhotoRequest(image, userId, groupId);
     }
