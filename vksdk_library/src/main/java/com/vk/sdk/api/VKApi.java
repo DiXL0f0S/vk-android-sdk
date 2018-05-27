@@ -29,6 +29,7 @@ import com.vk.sdk.api.methods.VKApiFriends;
 import com.vk.sdk.api.methods.VKApiGroups;
 import com.vk.sdk.api.methods.VKApiMessages;
 import com.vk.sdk.api.methods.VKApiPhotos;
+import com.vk.sdk.api.methods.VKApiStories;
 import com.vk.sdk.api.methods.VKApiUsers;
 import com.vk.sdk.api.methods.VKApiVideo;
 import com.vk.sdk.api.methods.VKApiWall;
@@ -108,6 +109,13 @@ public class VKApi {
      * Returns object for preparing requests to fave part of API
      */
     public static VKApiFave fave() { return new VKApiFave(); }
+
+    /**
+     * https://vk.com/dev/stories
+     * Returns object for preparing requests to fave part of API
+     */
+    public static VKApiStories stories() { return new VKApiStories(); }
+
     /**
      * Upload a specified file to VK servers for posting on user or group wall
      * @param image Image file to upload. Must have extension jpg or png
