@@ -67,7 +67,7 @@ public class VKApiStory implements Identifiable, android.os.Parcelable {
     }
 
     /**
-     * Creates a Note instance from Parcel.
+     * Creates a Story instance from Parcel.
      */
     public VKApiStory(Parcel in) {
         this.id = in.readInt();
@@ -125,8 +125,6 @@ public class VKApiStory implements Identifiable, android.os.Parcelable {
                 ", date=" + date +
                 ", can_see=" + can_see +
                 ", type='" + type + '\'' +
-                ", photo=" + photo +
-                ", video=" + video +
                 '}';
     }
 }
