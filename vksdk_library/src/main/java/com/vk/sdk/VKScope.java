@@ -34,6 +34,7 @@ public class VKScope {
     public static final String VIDEO = "video";
     public static final String DOCS = "docs";
     public static final String NOTES = "notes";
+    public static final String STORIES = "stories";
     public static final String PAGES = "pages";
     public static final String STATUS = "status";
     public static final String WALL = "wall";
@@ -44,7 +45,7 @@ public class VKScope {
     public static final String ADS = "ads";
     public static final String OFFLINE = "offline";
     public static final String EMAIL = "email";
-    public static final String DIRECT = "direct";
+    public static final String MARKET = "market";
 
     /**
      * Converts integer value of permissions into arraylist of constants
@@ -58,6 +59,7 @@ public class VKScope {
         if ((permissionsValue & 4) > 0) res.add(PHOTOS);
         if ((permissionsValue & 8) > 0) res.add(AUDIO);
         if ((permissionsValue & 16) > 0) res.add(VIDEO);
+        if ((permissionsValue & 64) > 0) res.add(STORIES);
         if ((permissionsValue & 128) > 0) res.add(PAGES);
         if ((permissionsValue & 1024) > 0) res.add(STATUS);
         if ((permissionsValue & 2048) > 0) res.add(NOTES);
@@ -69,6 +71,8 @@ public class VKScope {
         if ((permissionsValue & 262144) > 0) res.add(GROUPS);
         if ((permissionsValue & 524288) > 0) res.add(NOTIFICATIONS);
         if ((permissionsValue & 1048576) > 0) res.add(STATS);
+        if ((permissionsValue & 4194304) > 0) res.add(EMAIL);
+        if ((permissionsValue & 134217728) > 0) res.add(MARKET);
         return res;
     }
 }
