@@ -53,16 +53,16 @@ public class VKApiStory implements Identifiable, android.os.Parcelable {
     /**
      * Fills a Story instance from JSONObject.
      */
-    public VKApiStory parse(JSONObject source) {
+    public VKApiStory parse(JSONObject source) throws JSONException {
         id = source.optInt("id");
         owner_id = source.optInt("user_id");
         date = source.optLong("date");
         can_see = ParseUtils.parseBoolean(source, "can_see");
         type = source.optString("type");
         if (type.equals("photo"))
-            photo.parse(source.optJSONObject("photo"));
+            photo = new VKApiPhoto(source.optJSONObject("photo"));
         else if (type.equals("video"))
-            video.parse(source.optJSONObject("video"));
+            video = new VKApiVideo(source.optJSONObject("video"));
         return this;
     }
 
