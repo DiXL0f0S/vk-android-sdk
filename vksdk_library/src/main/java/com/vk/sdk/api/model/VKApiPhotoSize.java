@@ -229,7 +229,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
      */
     public static VKApiPhotoSize parse(JSONObject source, int originalWidth, int originalHeight) {
         VKApiPhotoSize result = new VKApiPhotoSize();
-        result.url = source.optString("src");
+        result.url = source.optString("url");
         result.width = source.optInt("width");
         result.height = source.optInt("height");
         String type = source.optString("type");
