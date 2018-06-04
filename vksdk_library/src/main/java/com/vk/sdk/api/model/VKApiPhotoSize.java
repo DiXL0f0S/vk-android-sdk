@@ -153,7 +153,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
     /**
      * Url of image
      */
-    public String src;
+    public String url;
 
     /**
      * Width of image in pixels
@@ -175,7 +175,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
     }
 
     private VKApiPhotoSize(Parcel in) {
-        this.src = in.readString();
+        this.url = in.readString();
         this.width = in.readInt();
         this.height = in.readInt();
         this.type = (char) in.readInt();
@@ -195,7 +195,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.src);
+        dest.writeString(this.url);
         dest.writeInt(this.width);
         dest.writeInt(this.height);
         dest.writeInt((int)this.type);
@@ -229,7 +229,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
      */
     public static VKApiPhotoSize parse(JSONObject source, int originalWidth, int originalHeight) {
         VKApiPhotoSize result = new VKApiPhotoSize();
-        result.src = source.optString("src");
+        result.url = source.optString("src");
         result.width = source.optInt("width");
         result.height = source.optInt("height");
         String type = source.optString("type");
@@ -318,7 +318,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
      */
     public static VKApiPhotoSize create(String url, int width, int height) {
         VKApiPhotoSize result = new VKApiPhotoSize();
-        result.src = url;
+        result.url = url;
         result.width = width;
         result.height = height;
         float ratio = width / (float) height ;
@@ -347,7 +347,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
      */
     public static VKApiPhotoSize create(String url, char type, int originalWidth, int originalHeight) {
         VKApiPhotoSize result = new VKApiPhotoSize();
-        result.src = url;
+        result.url = url;
         result.type = type;
         fillDimensions(result, originalWidth, originalHeight);
         return result;
@@ -363,7 +363,7 @@ public class VKApiPhotoSize extends VKApiModel implements Comparable<VKApiPhotoS
     @Override
     public String toString() {
         return "VKApiPhotoSize{" +
-                "src='" + src + '\'' +
+                "url='" + url + '\'' +
                 ", width=" + width +
                 ", height=" + height +
                 ", type=" + type +

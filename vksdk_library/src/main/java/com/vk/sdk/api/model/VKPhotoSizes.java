@@ -136,7 +136,7 @@ public class VKPhotoSizes extends VKList<VKApiPhotoSize> implements Parcelable {
     public String getByType(char type) {
         for(VKApiPhotoSize size: this) {
             if(size.type == type) {
-                return size.src;
+                return size.url;
             }
         }
         return null;
@@ -184,7 +184,7 @@ public class VKPhotoSizes extends VKList<VKApiPhotoSize> implements Parcelable {
 
         for(VKApiPhotoSize size : this) {
             if(size.width >= width) {
-                mWidthThumb = size.src;
+                mWidthThumb = size.url;
                 break;
             }
         }
@@ -201,7 +201,7 @@ public class VKPhotoSizes extends VKList<VKApiPhotoSize> implements Parcelable {
 
         for(VKApiPhotoSize size : this) {
             if(size.height >= height) {
-                mHeightThumb = size.src;
+                mHeightThumb = size.url;
                 break;
             }
         }
