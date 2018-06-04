@@ -69,36 +69,6 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
     public long date;
 
     /**
-     * URL of image with maximum size 75x75px.
-     */
-    public String photo_75;
-
-    /**
-     * URL of image with maximum size 130x130px.
-     */
-    public String photo_130;
-
-    /**
-     * URL of image with maximum size 604x604px.
-     */
-    public String photo_604;
-
-    /**
-     * URL of image with maximum size 807x807px.
-     */
-    public String photo_807;
-
-    /**
-     * URL of image with maximum size 1280x1024px.
-     */
-    public String photo_1280;
-
-    /**
-     * URL of image with maximum size 2560x2048px.
-     */
-    public String photo_2560;
-
-    /**
      * Width (in pixels) of the original photo.
      */
     public int width;
@@ -110,9 +80,8 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
 
     /**
      * All photo thumbs in photo sizes.
-     * It has data even if server returned them without {@code PhotoSizes} format.
      */
-    public VKPhotoSizes src = new VKPhotoSizes();
+    public VKPhotoSizes sizes = new VKPhotoSizes();
 
     /**
      * Information whether the current user liked the photo.
@@ -160,13 +129,6 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         date = from.optLong("date");
         access_key = from.optString("access_key");
 
-        photo_75 = from.optString("photo_75");
-        photo_130 = from.optString("photo_130");
-        photo_604 = from.optString("photo_604");
-        photo_807 = from.optString("photo_807");
-        photo_1280 = from.optString("photo_1280");
-        photo_2560 = from.optString("photo_2560");
-
         height = from.optInt("height");
         width = from.optInt("width");
 
@@ -177,30 +139,10 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         tags = parseInt(from.optJSONObject("tags"), "count");
         can_comment = parseBoolean(from, "can_comment");
 
-        src.setOriginalDimension(width, height);
+        sizes.setOriginalDimension(width, height);
         JSONArray photo_sizes = from.optJSONArray("sizes");
         if(photo_sizes != null) {
-            src.fill(photo_sizes);
-        } else {
-            if(!TextUtils.isEmpty(photo_75)) {
-                src.add(VKApiPhotoSize.create(photo_75, VKApiPhotoSize.S, width, height));
-            }
-            if(!TextUtils.isEmpty(photo_130)) {
-                src.add(VKApiPhotoSize.create(photo_130, VKApiPhotoSize.M, width, height));
-            }
-            if(!TextUtils.isEmpty(photo_604)) {
-                src.add(VKApiPhotoSize.create(photo_604, VKApiPhotoSize.X, width, height));
-            }
-            if(!TextUtils.isEmpty(photo_807)) {
-                src.add(VKApiPhotoSize.create(photo_807, VKApiPhotoSize.Y, width, height));
-            }
-            if(!TextUtils.isEmpty(photo_1280)) {
-                src.add(VKApiPhotoSize.create(photo_1280, VKApiPhotoSize.Z, width, height));
-            }
-            if(!TextUtils.isEmpty(photo_2560)) {
-                src.add(VKApiPhotoSize.create(photo_2560, VKApiPhotoSize.W, width, height));
-            }
-            src.sort();
+            sizes.fill(photo_sizes);
         }
         return this;
     }
@@ -215,13 +157,7 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         this.user_id = in.readInt();
         this.text = in.readString();
         this.date = in.readLong();
-        this.src = in.readParcelable(VKPhotoSizes.class.getClassLoader());
-        this.photo_75 = in.readString();
-        this.photo_130 = in.readString();
-        this.photo_604 = in.readString();
-        this.photo_807 = in.readString();
-        this.photo_1280 = in.readString();
-        this.photo_2560 = in.readString();
+        this.sizes = in.readParcelable(VKPhotoSizes.class.getClassLoader());
         this.width = in.readInt();
         this.height = in.readInt();
         this.user_likes = in.readByte() != 0;
@@ -285,13 +221,7 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
         dest.writeInt(this.user_id);
         dest.writeString(this.text);
         dest.writeLong(this.date);
-        dest.writeParcelable(this.src, flags);
-        dest.writeString(this.photo_75);
-        dest.writeString(this.photo_130);
-        dest.writeString(this.photo_604);
-        dest.writeString(this.photo_807);
-        dest.writeString(this.photo_1280);
-        dest.writeString(this.photo_2560);
+        dest.writeParcelable(this.sizes, flags);
         dest.writeInt(this.width);
         dest.writeInt(this.height);
         dest.writeByte(user_likes ? (byte) 1 : (byte) 0);
@@ -321,15 +251,9 @@ public class VKApiPhoto extends VKAttachments.VKApiAttachment implements Parcela
                 ", user_id=" + user_id +
                 ", text='" + text + '\'' +
                 ", date=" + date +
-                ", photo_75='" + photo_75 + '\'' +
-                ", photo_130='" + photo_130 + '\'' +
-                ", photo_604='" + photo_604 + '\'' +
-                ", photo_807='" + photo_807 + '\'' +
-                ", photo_1280='" + photo_1280 + '\'' +
-                ", photo_2560='" + photo_2560 + '\'' +
                 ", width=" + width +
                 ", height=" + height +
-                ", src=" + src +
+                ", sizes=" + sizes +
                 ", user_likes=" + user_likes +
                 ", can_comment=" + can_comment +
                 ", likes=" + likes +

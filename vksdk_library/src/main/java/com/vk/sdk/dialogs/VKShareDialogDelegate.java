@@ -249,12 +249,12 @@ class VKShareDialogDelegate {
             public void onComplete(VKResponse response) {
                 VKPhotoArray photos = (VKPhotoArray) response.parsedModel;
                 for (VKApiPhoto photo : photos) {
-                    if (photo.src.getByType('q') != null) {
-                        loadAndAddPhoto(photo.src.getByType('q'));
-                    } else if (photo.src.getByType('p') != null) {
-                        loadAndAddPhoto(photo.src.getByType('p'));
-                    } else if (photo.src.getByType('m') != null) {
-                        loadAndAddPhoto(photo.src.getByType('m'));
+                    if (photo.sizes.getByType('q') != null) {
+                        loadAndAddPhoto(photo.sizes.getByType('q'));
+                    } else if (photo.sizes.getByType('p') != null) {
+                        loadAndAddPhoto(photo.sizes.getByType('p'));
+                    } else if (photo.sizes.getByType('m') != null) {
+                        loadAndAddPhoto(photo.sizes.getByType('m'));
                     }
                     //else ignore that strange photo
                 }
