@@ -46,7 +46,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     /**
      * Wall owner ID.
      */
-    public int to_id;
+    public int owner_id;
 
     /**
      * ID of the user who posted.
@@ -157,7 +157,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
      */
     public VKApiPost parse(JSONObject source) throws JSONException {
         id = source.optInt("id");
-        to_id = source.optInt("to_id");
+        owner_id = source.optInt("owner_id");
         from_id = source.optInt("from_id");
         date = source.optLong("date");
         text = source.optString("text");
@@ -198,7 +198,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
      */
     public VKApiPost(Parcel in) {
         this.id = in.readInt();
-        this.to_id = in.readInt();
+        this.owner_id = in.readInt();
         this.from_id = in.readInt();
         this.date = in.readLong();
         this.text = in.readString();
@@ -234,7 +234,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
 
     @Override
     public CharSequence toAttachmentString() {
-        return new StringBuilder(VKAttachments.TYPE_POST).append(to_id).append('_').append(id);
+        return new StringBuilder(VKAttachments.TYPE_POST).append(owner_id).append('_').append(id);
     }
 
     @Override
@@ -250,7 +250,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.id);
-        dest.writeInt(this.to_id);
+        dest.writeInt(this.owner_id);
         dest.writeInt(this.from_id);
         dest.writeLong(this.date);
         dest.writeString(this.text);
@@ -286,7 +286,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     public String toString() {
         return "VKApiPost{" +
                 "id=" + id +
-                ", to_id=" + to_id +
+                ", owner_id=" + owner_id +
                 ", from_id=" + from_id +
                 ", date=" + date +
                 ", text='" + text + '\'' +
