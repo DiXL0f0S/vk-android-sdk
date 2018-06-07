@@ -49,7 +49,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     public int owner_id;
 
     /**
-     * ID of the user who posted.
+     * ID of the author.
      */
     public int from_id;
 
@@ -157,7 +157,10 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
      */
     public VKApiPost parse(JSONObject source) throws JSONException {
         id = source.optInt("id");
-        owner_id = source.optInt("owner_id");
+        if (source.has("owner_id"))
+            owner_id = source.optInt("owner_id");
+        else
+            owner_id = source.optInt("from_id");
         from_id = source.optInt("from_id");
         date = source.optLong("date");
         text = source.optString("text");
