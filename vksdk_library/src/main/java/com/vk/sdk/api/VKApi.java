@@ -28,6 +28,7 @@ import com.vk.sdk.api.methods.VKApiFave;
 import com.vk.sdk.api.methods.VKApiFriends;
 import com.vk.sdk.api.methods.VKApiGroups;
 import com.vk.sdk.api.methods.VKApiMessages;
+import com.vk.sdk.api.methods.VKApiNewsfeed;
 import com.vk.sdk.api.methods.VKApiPhotos;
 import com.vk.sdk.api.methods.VKApiStatus;
 import com.vk.sdk.api.methods.VKApiStories;
@@ -189,9 +190,17 @@ public class VKApi {
 
     /**
      * https://vk.com/dev/video
-     * Returns object for preparing requests to audio part of API
+     * Returns object for preparing requests to video part of API
      */
     public static VKApiVideo video() {
         return new VKApiVideo();
+    }
+
+    /**
+     * https://vk.com/dev/video
+     * Returns object for preparing requests to newsfeed part of API
+     */
+    public static VKApiNewsfeed newsfeed() {
+        return new VKApiNewsfeed();
     }
 }
