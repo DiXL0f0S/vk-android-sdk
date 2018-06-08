@@ -156,7 +156,10 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
      * Fills a Post instance from JSONObject.
      */
     public VKApiPost parse(JSONObject source) throws JSONException {
-        id = source.optInt("id");
+        if (source.has("id"))
+            id = source.optInt("id");
+        else
+            id = source.optInt("post_id");
         if (source.has("owner_id"))
             owner_id = source.optInt("owner_id");
         else if (source.has("from_id"))
