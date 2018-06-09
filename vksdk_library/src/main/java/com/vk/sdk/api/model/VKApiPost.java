@@ -54,7 +54,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     public int from_id;
 
     /**
-     *
+     * ID of the administrator who posted the post (for communities only, returns for the requests with administrator's access token).
      */
     public int created_by;
 
@@ -84,49 +84,34 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     public boolean friends_only;
 
     /**
-     * Number of comments.
+     * Post comments info. Object with fields:
+     * count (integer) — comments count;
+     * can_post* (integer, [0,1]) — shows if current user can comment the post. ("1 — yes, 0'' — no);
+     * groups_can_post (integer, [0,1]) — information whether communities can comment this post.
      */
-    public int comments_count;
+    public VKComments comments;
 
     /**
-     * Whether the current user can leave comments to the post (false — cannot, true — can)
-     */
-    public boolean can_post_comment;
-
-    /**
-     * Number of users who liked the post.
-     */
-    public int likes_count;
-
-    /**
-     * Whether the user liked the post (false — not liked, true — liked)
-     */
-    public boolean user_likes;
-
-    /**
-     * Whether the user can like the post (false — cannot, true — can).
-     */
-    public boolean can_like;
-
-    /**
-     * Whether the user can repost (false — cannot, true — can).
-     */
-    public boolean can_publish;
-
-    /**
-     * Number of users who copied the post.
-     */
-    public int reposts_count;
-
-    /**
-     * Whether the user reposted the post (false — not reposted, true — reposted).
-     */
-    public boolean user_reposted;
-
-    /**
-     *
+     * Post views info. Object with fields:
+     * count (integer) — views count;
      */
     public VKViews views;
+
+    /**
+     * Post likes info. Object with fields:
+     * count (integer) — likes count;
+     * user_likes* (integer, [0,1]) — Whether the user liked the post (0 — not liked, 1 — liked).
+     * can_like* (integer, [0,1]) — Whether the user can like the post (0 — cannot, 1 — can).
+     * can_publish* (integer, [0,1]) — Whether the user can repost (0 — cannot, 1 — can).
+     */
+    public VKLikes likes;
+
+    /**
+     * Information about reposts (Share with friends); an object containing:
+     * count (integer) — Number of users who copied the post.
+     * user_reposted* (integer, [0,1]) — Whether the user reposted the post (0 — not reposted, 1 — reposted).
+     */
+    public VKReposts reposts;
 
     /**
      * Type of the post, can be: post, copy, reply, postpone, suggest.
@@ -183,24 +168,12 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
         reply_owner_id = source.optInt("reply_owner_id");
         reply_post_id = source.optInt("reply_post_id");
         friends_only = ParseUtils.parseBoolean(source, "friends_only");
-        JSONObject comments = source.optJSONObject("comments");
-        if(comments != null) {
-            comments_count = comments.optInt("count");
-            can_post_comment = ParseUtils.parseBoolean(comments, "can_post");
-        }
-        JSONObject likes = source.optJSONObject("likes");
-        if(likes != null) {
-            likes_count = likes.optInt("count");
-            user_likes = ParseUtils.parseBoolean(likes, "user_likes");
-            can_like = ParseUtils.parseBoolean(likes, "can_like");
-            can_publish = ParseUtils.parseBoolean(likes, "can_publish");
-        }
-        JSONObject reposts = source.optJSONObject("reposts");
-        if(reposts != null) {
-            reposts_count = reposts.optInt("count");
-            user_reposted = ParseUtils.parseBoolean(reposts, "user_reposted");
-        }
-        VKViews views = new VKViews(source.optJSONObject("views"));
+
+        comments = new VKComments(source.optJSONObject("comments"));
+        likes = new VKLikes(source.optJSONObject("likes"));
+        reposts = new VKReposts(source.optJSONObject("reposts"));
+        views = new VKViews(source.optJSONObject("views"));
+
         post_type = source.optString("post_type");
         attachments.fill(source.optJSONArray("attachments"));
         JSONObject geo = source.optJSONObject("geo");
@@ -225,14 +198,12 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
         this.reply_owner_id = in.readInt();
         this.reply_post_id = in.readInt();
         this.friends_only = in.readByte() != 0;
-        this.comments_count = in.readInt();
-        this.can_post_comment = in.readByte() != 0;
-        this.likes_count = in.readInt();
-        this.user_likes = in.readByte() != 0;
-        this.can_like = in.readByte() != 0;
-        this.can_publish = in.readByte() != 0;
-        this.reposts_count = in.readInt();
-        this.user_reposted = in.readByte() != 0;
+
+        this.comments = in.readParcelable(VKComments.class.getClassLoader());
+        this.likes = in.readParcelable(VKLikes.class.getClassLoader());
+        this.reposts = in.readParcelable(VKReposts.class.getClassLoader());
+        this.views = in.readParcelable(VKViews.class.getClassLoader());
+
         this.post_type = in.readString();
         this.attachments = in.readParcelable(VKAttachments.class.getClassLoader());
         this.geo = in.readParcelable(VKApiPlace.class.getClassLoader());
@@ -277,14 +248,10 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
         dest.writeInt(this.reply_owner_id);
         dest.writeInt(this.reply_post_id);
         dest.writeByte(friends_only ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.comments_count);
-        dest.writeByte(can_post_comment ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.likes_count);
-        dest.writeByte(user_likes ? (byte) 1 : (byte) 0);
-        dest.writeByte(can_like ? (byte) 1 : (byte) 0);
-        dest.writeByte(can_publish ? (byte) 1 : (byte) 0);
-        dest.writeInt(this.reposts_count);
-        dest.writeByte(user_reposted ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.comments, flags);
+        dest.writeParcelable(this.likes, flags);
+        dest.writeParcelable(this.reposts, flags);
+        dest.writeParcelable(this.views, flags);
         dest.writeString(this.post_type);
         dest.writeParcelable(attachments, flags);
         dest.writeParcelable(this.geo, flags);
@@ -313,14 +280,10 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
                 ", reply_owner_id=" + reply_owner_id +
                 ", reply_post_id=" + reply_post_id +
                 ", friends_only=" + friends_only +
-                ", comments_count=" + comments_count +
-                ", can_post_comment=" + can_post_comment +
-                ", likes_count=" + likes_count +
-                ", user_likes=" + user_likes +
-                ", can_like=" + can_like +
-                ", can_publish=" + can_publish +
-                ", reposts_count=" + reposts_count +
-                ", user_reposted=" + user_reposted +
+                ", comments=" + comments +
+                ", likes=" + likes +
+                ", reposts=" + reposts +
+                ", views=" + views +
                 ", post_type='" + post_type + '\'' +
                 ", attachments=" + attachments +
                 ", geo=" + geo +
