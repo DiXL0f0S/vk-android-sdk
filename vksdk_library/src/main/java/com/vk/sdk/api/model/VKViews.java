@@ -4,9 +4,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 class VKViews {
-    int count;
+    public int count;
 
-    public VKViews(JSONObject from) throws JSONException
+    VKViews(JSONObject from) throws JSONException
     {
         parse(from);
     }
