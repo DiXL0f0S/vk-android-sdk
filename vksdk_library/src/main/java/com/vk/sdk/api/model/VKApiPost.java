@@ -54,6 +54,11 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     public int from_id;
 
     /**
+     *
+     */
+    public int created_by;
+
+    /**
      * Date (in Unix time) the post was added.
      */
     public long date;
@@ -119,6 +124,11 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
     public boolean user_reposted;
 
     /**
+     *
+     */
+    public VKViews views;
+
+    /**
      * Type of the post, can be: post, copy, reply, postpone, suggest.
      */
     public String post_type;
@@ -167,6 +177,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
         else if (source.has("source_id"))
             owner_id = source.optInt("source_id");
         from_id = source.optInt("from_id");
+        created_by = source.optInt("created_by");
         date = source.optLong("date");
         text = source.optString("text");
         reply_owner_id = source.optInt("reply_owner_id");
@@ -189,6 +200,7 @@ public class VKApiPost extends VKAttachments.VKApiAttachment implements Identifi
             reposts_count = reposts.optInt("count");
             user_reposted = ParseUtils.parseBoolean(reposts, "user_reposted");
         }
+        VKViews views = new VKViews(source.optJSONObject("views"));
         post_type = source.optString("post_type");
         attachments.fill(source.optJSONArray("attachments"));
         JSONObject geo = source.optJSONObject("geo");
